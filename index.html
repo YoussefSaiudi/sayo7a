@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صيح صيوحة</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            transition: background 0.5s;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease;
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            max-width: 400px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #00aaff;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #00aaff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #0077cc;
+            transform: scale(1.05);
+        }
+
+        video {
+            margin-top: 20px;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* طبقة شفافة */
+        }
+
+        .question {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .answer-buttons button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>صيح صيوحة</h1>
+    <input type="text" id="userInput" placeholder="ادخل النص هنا">
+    <button onclick="playFirstVideo()">صيح الآن</button>
+
+    <video id="videoPlayer" controls width="100%" max-width="500" onended="showOverlay()">
+        <source id="videoSource" src="video_2024-10-10_21-16-31.mp4" type="video/mp4">
+        متصفحك لا يدعم تشغيل الفيديو.
+    </video>
+
+    <div class="overlay" id="overlay">
+        <div class="question">هل شعورك أفضل الآن؟</div>
+        <div class="answer-buttons">
+            <button onclick="playSecondVideo(false)">لا</button>
+            <button onclick="playSecondVideo(true)">نعم</button>
+            <button onclick="restartPage()">صيوحة جديدة</button>
+        </div>
+    </div>
+
+    <script>
+        function playFirstVideo() {
+            const input = document.getElementById('userInput').value;
+            const video = document.getElementById('videoPlayer');
+            if (input.trim() !== '') {
+                video.style.display = 'block';
+                video.style.opacity = '1';
+                video.play();
+            } else {
+                alert('من فضلك ادخل نصا!');
+            }
+        }
+
+        function showOverlay() {
+            // إظهار الطبقة الشفافة مع السؤال بعد انتهاء الفيديو
+            document.getElementById('overlay').style.display = 'flex';
+        }
+
+        function playSecondVideo(feelBetter) {
+            const video = document.getElementById('videoPlayer');
+            const videoSource = document.getElementById('videoSource');
+            const overlay = document.getElementById('overlay');
+
+            // تحديد الفيديو الذي سيتم تشغيله بناءً على الإجابة
+            if (feelBetter) {
+                videoSource.src = "video_2024-10-10_21-38-40.mp4"; // تشغيل الفيديو الخاص بإجابة نعم
+            } else {
+                videoSource.src = "video_2024-10-10_21-37-50.mp4"; // تشغيل الفيديو الخاص بإجابة لا
+            }
+
+            video.load();
+            video.play();
+
+            // إخفاء الطبقة الشفافة بعد الاختيار
+            overlay.style.display = 'none';
+        }
+
+        function restartPage() {
+            // إعادة تعيين الصفحة وإظهار مربع النص للمستخدم
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('videoPlayer').style.display = 'none';
+            document.getElementById('userInput').value = ''; // تفريغ النص
+        }
+    </script>
+
+</body>
+
+</html>
